@@ -8,9 +8,8 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE)
-    nickname=models.CharField(max_length=50)
     bio=models.TextField(null=True)
-    profile_pic=models.ImageField(upload_to='pfp', null=True)
+    profile_pic=models.ImageField(upload_to='pfp/', null=True)
     created_by=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
