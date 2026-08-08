@@ -71,6 +71,7 @@ TEMPLATES = [
 
 # WSGI_APPLICATION = 'task_management.wsgi.application'
 ASGI_APPLICATION = 'task_management.asgi.application'
+AUTH_USER_MODEL="register.User"
 
 
 # Database
