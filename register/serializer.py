@@ -22,4 +22,9 @@ class ProfileSerializer(ModelSerializer):
         model=Profile
         fields='__all__'
 
+class ProfileGetSerializer(ModelSerializer):
+    user=UserGetSerializer(read_only=True)
+    class Meta:
+        model=Profile
+        fields=['user', 'bio']
 
