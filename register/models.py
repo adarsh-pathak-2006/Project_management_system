@@ -11,6 +11,7 @@ class Profile(models.Model):
     nickname=models.CharField(max_length=50)
     bio=models.TextField(null=True)
     profile_pic=models.ImageField(upload_to='pfp', null=True)
+    created_by=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
