@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth import get_user_model
 from register.models import Profile
+from teams.serializers import MemberGetSerializer
 
 User=get_user_model()
 
@@ -18,6 +19,7 @@ class RegisterSerializer(ModelSerializer):
 
 class ProfileSerializer(ModelSerializer):
     user=UserGetSerializer(read_only=True)
+    member_of_teams=MemberGetSerializer(read_only=True)
     class Meta:
         model=Profile
         fields='__all__'
