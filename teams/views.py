@@ -25,7 +25,7 @@ class TeamAPI(APIView):
 
 class TeamIndividualAPI(APIView):
     def get(self, request, pk):
-        data=Team.objects.all()
+        data=get_object_or_404(Team, id=pk)
         serial=TeamGetSerializer(data)
         return Response(serial.data, status=200)
 
@@ -35,11 +35,11 @@ class TeamIndividualAPI(APIView):
         if serial.is_valid():
             serial.save()
             return Response(serial.data, status=200)
-        return Response(serial.data, status=400)
+        return Response(serial.errors, status=400)
 
     def delete(self, request, pk):
         instance=get_object_or_404(Team, id=pk)
-        instance.delete
+        instance.delete()
         return Response(status=204)
 
 class MemberAPI(ListAPIView):
@@ -49,4 +49,5 @@ class MemberAPI(ListAPIView):
 class MemberIndividualAPI(RetrieveDestroyAPIView):
     serializer_class=MemberSerializer
     queryset=Member.objects.all()
-    
+
+

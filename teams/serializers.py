@@ -13,7 +13,6 @@ class TeamGetSerializer(ModelSerializer):
 
 class TeamSerializer(ModelSerializer):
     project=PrimaryKeyRelatedField(queryset=Project.objects.all(), many=True)
-    members=PrimaryKeyRelatedField(queryset=Member.objects.all(), many=True)
     class Meta:
         model=Team
         fields='__all__'
