@@ -15,7 +15,6 @@ class Team(models.Model):
 class Member(models.Model):
     team=models.ForeignKey(Team, on_delete=models.CASCADE, related_name='members', null=True)
     user=models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='member_of_teams')
-    name=models.CharField(max_length=150)
     description=models.TextField(null=True)
     is_leader=models.BooleanField(default=False)
     added_at=models.DateTimeField(auto_now_add=True)
