@@ -6,9 +6,12 @@ from rest_framework.response import Response
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
+from drf_spectacular.utils import extend_schema
+
 class RegisterAPI(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(request=RegisterSerializer)
     def post(self, request):
         serial = RegisterSerializer(data=request.data)
         if serial.is_valid():

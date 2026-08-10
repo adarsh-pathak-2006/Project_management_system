@@ -14,6 +14,7 @@ class RegisterSerializer(ModelSerializer):
     class Meta:
         model=User
         fields=['username', 'email', 'first_name', 'last_name', 'password', 'role']
+        extra_kwargs = {'role': {'required': False}}
 
     def create(self, validated_data):
         user = User.objects.create_user(
