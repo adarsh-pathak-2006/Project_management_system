@@ -5,9 +5,18 @@ from project.serializers import ProjectSerializer
 from register.models import Profile
 from project.permissions import IsProjectCreator
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
+
 class ProjectAPI(ListAPIView):
     serializer_class=ProjectSerializer
     queryset=Project.objects.all()
+
+    @method_decorator(cache_page(60 * 15))
+    @method_decorator(vary_on_headers("Authorization"))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class ProjectDetailAPI(RetrieveAPIView):
     serializer_class=ProjectSerializer

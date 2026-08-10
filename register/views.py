@@ -26,6 +26,12 @@ class MyProfileAPI(RetrieveUpdateDestroyAPIView):
         return get_object_or_404(Profile, user=self.request.user)
 
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
+
+@method_decorator(cache_page(60 * 15), name='dispatch')
+@method_decorator(vary_on_headers("Authorization"), name='dispatch')
 class ProfileAPI(ListAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()

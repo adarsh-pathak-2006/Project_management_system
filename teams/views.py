@@ -6,7 +6,12 @@ from rest_framework.response import Response
 from register.models import Profile
 from rest_framework.generics import ListAPIView, RetrieveDestroyAPIView
 from teams.permissions import IsTeamLeaderOrReadOnly, IsTeamLeaderForMemberAction
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 
+@method_decorator(cache_page(60 * 15), name='get')
+@method_decorator(vary_on_headers("Authorization"), name='get')
 class TeamAPI(APIView):
     def get(self, request):
         data=Team.objects.all()
@@ -47,6 +52,8 @@ class TeamIndividualAPI(APIView):
         instance.delete()
         return Response(status=204)
 
+@method_decorator(cache_page(60 * 15), name='get')
+@method_decorator(vary_on_headers("Authorization"), name='get')
 class MemberAPI(ListAPIView):
     serializer_class=MemberSerializer
     queryset=Member.objects.all()
