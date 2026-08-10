@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from register.models import Profile
 from rest_framework.generics import ListAPIView, RetrieveDestroyAPIView
-
+from teams.permissions import IsTeamLeaderOrReadOnly, IsTeamLeaderForMemberAction
 
 class TeamAPI(APIView):
     def get(self, request):
@@ -16,21 +16,25 @@ class TeamAPI(APIView):
     def post(self, request):
         serial=TeamSerializer(data=request.data)
         if serial.is_valid():
-            team_data=serial.save()
             profile_data=get_object_or_404(Profile, user=request.user)
+            team_data=serial.save(created_by=profile_data)
             Member.objects.create(team=team_data, user=profile_data, is_leader=True)
             return Response(serial.data, status=201)
         return Response(serial.errors, status=400)
     
 
 class TeamIndividualAPI(APIView):
+    permission_classes = [IsTeamLeaderOrReadOnly]
+
     def get(self, request, pk):
         data=get_object_or_404(Team, id=pk)
+        self.check_object_permissions(request, data)
         serial=TeamGetSerializer(data)
         return Response(serial.data, status=200)
 
     def put(self, request, pk):
         instance=get_object_or_404(Team, id=pk)
+        self.check_object_permissions(request, instance)
         serial=TeamSerializer(instance, data=request.data)
         if serial.is_valid():
             serial.save()
@@ -39,6 +43,7 @@ class TeamIndividualAPI(APIView):
 
     def delete(self, request, pk):
         instance=get_object_or_404(Team, id=pk)
+        self.check_object_permissions(request, instance)
         instance.delete()
         return Response(status=204)
 
@@ -48,6 +53,20 @@ class MemberAPI(ListAPIView):
 
 class MemberAddAPI(APIView):
     def post(self, request):
+        team_id = request.data.get('team')
+        if not team_id:
+            return Response({"detail": "team field is required."}, status=400)
+        
+        team_instance = get_object_or_404(Team, id=team_id)
+        
+        # Manually check if user is leader
+        try:
+            leader_member = Member.objects.get(team=team_instance, user__user=request.user)
+            if not leader_member.is_leader:
+                return Response({"detail": "You do not have permission to perform this action. Only team leaders can add members."}, status=403)
+        except Member.DoesNotExist:
+            return Response({"detail": "You do not have permission to perform this action. Only team leaders can add members."}, status=403)
+
         serial=MemberAddSerializer(data=request.data)
         if serial.is_valid():
             serial.save()
@@ -57,5 +76,4 @@ class MemberAddAPI(APIView):
 class MemberIndividualAPI(RetrieveDestroyAPIView):
     serializer_class=MemberSerializer
     queryset=Member.objects.all()
-
-
+    permission_classes = [IsTeamLeaderForMemberAction]

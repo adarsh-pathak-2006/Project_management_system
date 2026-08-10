@@ -3,6 +3,7 @@ from project.models import Project
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from project.serializers import ProjectSerializer
 from register.models import Profile
+from project.permissions import IsProjectCreator
 
 class ProjectAPI(ListAPIView):
     serializer_class=ProjectSerializer
@@ -25,7 +26,5 @@ class MyProjectsAPI(ListCreateAPIView):
 
 class MyProjectIndividualAPI(RetrieveUpdateDestroyAPIView):
     serializer_class=ProjectSerializer
-
-    def get_queryset(self):
-        profile_data=get_object_or_404(Profile, user=self.request.user)
-        return Project.objects.filter(created_by=profile_data)
+    permission_classes = [IsProjectCreator]
+    queryset=Project.objects.all()

@@ -12,7 +12,8 @@ class TeamGetSerializer(ModelSerializer):
         fields='__all__'
 
 class TeamSerializer(ModelSerializer):
-    project=PrimaryKeyRelatedField(queryset=Project.objects.all(), many=True)
+    project=PrimaryKeyRelatedField(queryset=Project.objects.all(), many=True, required=False)
+    created_by=ProfileGetSerializer(read_only=True)
     class Meta:
         model=Team
         fields='__all__'
