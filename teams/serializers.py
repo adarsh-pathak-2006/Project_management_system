@@ -23,3 +23,9 @@ class MemberSerializer(ModelSerializer):
     class Meta:
         model=Member
         fields='__all__'
+
+class MemberAddSerializer(ModelSerializer):
+    team=PrimaryKeyRelatedField(queryset=Team.objects.all())
+    class Meta:
+        model=Member
+        fields='__all__'

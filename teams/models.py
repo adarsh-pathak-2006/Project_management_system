@@ -3,6 +3,7 @@ from project.models import Project
 from register.models import Profile
 
 class Team(models.Model):
+    created_by=models.ForeignKey(Profile, on_delete=models.CASCADE)
     project=models.ManyToManyField(Project)
     name=models.CharField(max_length=100)
     specialization=models.CharField(max_length=300)
