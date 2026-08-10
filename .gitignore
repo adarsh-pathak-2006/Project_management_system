@@ -1,1 +1,28 @@
+# Environments
+.env
 venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Database
+db.sqlite3
+db.sqlite3-journal
+
+# Static files
+staticfiles/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Secrets
+django-insecure-5fcr^letszrui@gpe8*(ij*@@j4)3$h*j*yl4&@nmt_7-6o9#z
