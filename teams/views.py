@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from teams.serializers import TeamGetSerializer, TeamSerializer, MemberSerializer
+from teams.serializers import TeamGetSerializer, TeamSerializer, MemberSerializer, MemberAddSerializer
 from teams.models import Team, Member
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -45,6 +45,11 @@ class TeamIndividualAPI(APIView):
 class MemberAPI(ListAPIView):
     serializer_class=MemberSerializer
     queryset=Member.objects.all()
+
+class MemberAddAPI(APIView):
+    def post(self, request, pk, ck):
+        serial=MemberAddSerializer(data=request.data)
+
 
 class MemberIndividualAPI(RetrieveDestroyAPIView):
     serializer_class=MemberSerializer
