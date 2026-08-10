@@ -16,11 +16,11 @@ class MyProjectsAPI(ListCreateAPIView):
     serializer_class=ProjectSerializer
     def get_queryset(self):
         profile_data=get_object_or_404(Profile, user=self.request.user)
-        return Project.objects.filter(created_at=profile_data)
+        return Project.objects.filter(created_by=profile_data)
 
     def perform_create(self, serializer):
         profile_data=get_object_or_404(Profile, user=self.request.user)
-        serializer.save(created_at=profile_data)
+        serializer.save(created_by=profile_data)
 
 
 class MyProjectIndividualAPI(RetrieveUpdateDestroyAPIView):
@@ -28,4 +28,4 @@ class MyProjectIndividualAPI(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         profile_data=get_object_or_404(Profile, user=self.request.user)
-        return Project.objects.filter(created_at=profile_data)
+        return Project.objects.filter(created_by=profile_data)

@@ -47,9 +47,12 @@ class MemberAPI(ListAPIView):
     queryset=Member.objects.all()
 
 class MemberAddAPI(APIView):
-    def post(self, request, pk, ck):
+    def post(self, request):
         serial=MemberAddSerializer(data=request.data)
-
+        if serial.is_valid():
+            serial.save()
+            return Response(serial.data, status=201)
+        return Response(serial.errors, status=400)
 
 class MemberIndividualAPI(RetrieveDestroyAPIView):
     serializer_class=MemberSerializer
