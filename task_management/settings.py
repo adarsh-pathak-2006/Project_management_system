@@ -35,7 +35,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne', 'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -108,8 +107,8 @@ CACHES = {
     }
 }
 
-# WSGI_APPLICATION = 'task_management.wsgi.application'
-ASGI_APPLICATION = 'task_management.asgi.application'
+WSGI_APPLICATION = 'task_management.wsgi.application'
+# ASGI_APPLICATION = 'task_management.asgi.application'
 AUTH_USER_MODEL = "register.User"
 
 # Database

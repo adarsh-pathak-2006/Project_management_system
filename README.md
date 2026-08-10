@@ -59,7 +59,7 @@ This API is pre-configured for instant deployment on PaaS providers like Render.
 ### Render Setup:
 1. Connect your GitHub repository to Render as a **Web Service**.
 2. **Build Command**: `./build.sh` *(This installs dependencies, collects static files, and runs migrations)*
-3. **Start Command**: `daphne task_management.asgi:application --port $PORT --bind 0.0.0.0`
+3. **Start Command**: `gunicorn task_management.wsgi:application`
 4. Add the following **Environment Variables** in Render's dashboard:
    - `SECRET_KEY` (Generate a random secure string)
    - `DEBUG` = `False`
